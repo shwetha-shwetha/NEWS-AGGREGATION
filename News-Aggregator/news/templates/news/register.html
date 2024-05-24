@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Registration</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    {% include "link.html" %} 
+    <style>
+
+      @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+      *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      }
+      body{
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fd7e14;
+      }
+      .wrapper{
+      position: relative;
+      max-width: 430px;
+      width: 100%;
+      background: #ccc;
+      padding: 34px;
+      border-radius: 6px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      }
+      .wrapper h2{
+      position: relative;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      }
+      .wrapper h2::before{
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 28px;
+      border-radius: 12px;
+      background: #fff;
+      }
+      .wrapper form{
+      margin-top: 30px;
+      }
+      .wrapper form .input-box{
+      height: 52px;
+      margin: 18px 0;
+      }
+      form .input-box input{
+      height: 100%;
+      width: 100%;
+      outline: none;
+      padding: 0 15px;
+      font-size: 17px;
+      font-weight: 400;
+      color: #333;
+      border: 1.5px solid #C7BEBE;
+      border-bottom-width: 2.5px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      }
+      .input-box input:focus,
+      .input-box input:valid{
+      border-color: #fd7e14;
+      }
+      form .policy{
+        display:flex;
+        align-items: flex-start;
+  
+    
+      
+      }
+      form h3{
+      color: #707070;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 10px;
+      }
+      .input-box.button input{
+      color: #fff;
+      letter-spacing: 1px;
+      border: none;
+      background: #fd7e14;
+      cursor: pointer;
+      }
+      .input-box.button input:hover{
+      background: #fd7e14;
+      }
+      form .text h3{
+      color: #fff;
+      width: 100%;
+      text-align: center;
+      }
+      form .text h3 a{
+      color: #fd7e14;
+      text-decoration: none;
+      }
+      form .text h3 a:hover{
+      text-decoration: underline;
+      }
+      hr{
+        color: #fff;
+      }
+      form i {
+        margin-left: -30px;
+        cursor: pointer;
+    }
+    .ap{
+      text-indent: 10px;
+    }
+    </style>
+   </head>
+    <link
+   rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+ />
+<body>
+  <div class="wrapper animate__animated animate__fadeInUp">
+    <h2>Registration</h2>
+    <hr>
+    {% if messages %}
+      <div class="alert alert-info" role="alert">
+        {% for message in messages %}
+         {{ message }}
+        {% endfor %}
+      </div>
+  {% endif %}
+    <form action="{% url 'register' %}" method="post">
+      {% csrf_token %}
+      <div class="input-box">
+        <input type="text" name="first_name" placeholder="Enter your first name" required>
+      </div>
+      <div class="input-box">
+        <input type="text" name="last_name" placeholder="Enter your last name" required>
+      </div>
+      <div class="input-box">
+        <input type="text" name="username" placeholder="Enter your email" required>
+      </div>
+      <div class="input-box">
+        <input type="password" class="password" name="password" id="password" required placeholder="Create password" onkeyup='check()'>
+        <i class="bi bi-eye-slash" id="togglePassword1"></i>
+      </div>
+      <div class="input-box">
+        <input type="password" id="checkPassword" class="password"  placeholder="Confrim password" required onkeyup='check()'>
+        <i class="bi bi-eye-slash" id="togglePassword2"></i>
+      </div>
+      <p class="ap" id="alertPassword"></p>
+    
+      <div class="policy">
+        <input type="checkbox" required >
+        <h3>I accept all terms & condition</h3>
+      </div>
+      <div class="input-box button">
+        <input type="submit" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="{% url 'login' %}">Login now</a></h3>
+      </div>
+    </form>
+  </div>
+  <script>
+    var check = function() {
+      var password = document.getElementById('password').value;
+      var checkPassword = document.getElementById('checkPassword').value;
+      var alertPassword = document.getElementById('alertPassword');
+  
+      if (checkPassword !== '') {
+        if (password === '' && checkPassword === '') {
+          // Both inputs are empty
+          alertPassword.style.color = '#EE2B39';
+          alertPassword.innerHTML = '<span><i class="fas fa-exclamation-triangle"></i>Passwords cannot be empty</span>';
+        } else if (password === checkPassword) {
+          // Passwords match
+          alertPassword.style.color = '#8CC63E';
+          alertPassword.innerHTML = '<span><i class="fas fa-check-circle"></i> Match !</span>';
+        } else {
+          // Passwords do not match
+          alertPassword.style.color = '#EE2B39';
+          alertPassword.innerHTML = '<span><i class="fas fa-exclamation-triangle"></i> Not matching</span>';
+        }
+      } else {
+        // Reset the alert message if checkPassword is empty
+        alertPassword.innerHTML = '';
+      }
+    }
+  
+    const togglePassword1 = document.querySelector("#togglePassword1");
+    const togglePassword2 = document.querySelector("#togglePassword2");
+    const password1 = document.querySelector("#password");
+    const password2 = document.querySelector("#checkPassword");
+  
+    togglePassword1.addEventListener("click", function() {
+      togglePassword(password1, togglePassword1);
+    });
+  
+    togglePassword2.addEventListener("click", function() {
+      togglePassword(password2, togglePassword2);
+    });
+  
+    function togglePassword(passwordField, icon) {
+      // toggle the type attribute
+      const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+      passwordField.setAttribute("type", type);
+  
+      // toggle the icon
+      icon.classList.toggle("bi-eye-slash");
+      icon.classList.toggle("bi-eye");
+    }
+  </script>
+  
+  
+
+</body>
+</html>
